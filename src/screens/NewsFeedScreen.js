@@ -60,7 +60,7 @@ const NewsFeedScreen = () => {
           </View>
           <TouchableOpacity>
             <View>
-              <Icon name="ellipsis-h" size={15} color="#000000"></Icon>
+              <Icon name="ellipsis-h" size={20} color="#000000"></Icon>
             </View>
           </TouchableOpacity>
         </View>
@@ -75,23 +75,24 @@ const NewsFeedScreen = () => {
             <Text>shares</Text>
           </View>
         </View>
+        <View style={styles.separatorLine}></View>
         <View style={styles.cardFooter3Buttons}>
           <TouchableOpacity>
             <View style={styles.footerButtonContainer}>
-              <Icon name="thumbs-up"></Icon>
+              <Icon name="thumbs-up" size={20} style={styles.styleIcon}></Icon>
               <Text style={styles.footerButtonText}>Like</Text>
             </View>
           </TouchableOpacity>
           <TouchableOpacity>
             <View style={styles.footerButtonContainer}>
-              <Icon name="user-o"></Icon>
-              <Text style={styles.footerButtonText}>comment</Text>
+              <Icon name="comment" size={20} style={styles.styleIcon}></Icon>
+              <Text style={styles.footerButtonText}>Comment</Text>
             </View>
           </TouchableOpacity>
           <TouchableOpacity>
             <View style={styles.footerButtonContainer}>
-              <Icon name="password"></Icon>
-              <Text style={styles.footerButtonText}>share</Text>
+              <Icon name="share" size={20} style={styles.styleIcon}></Icon>
+              <Text style={styles.footerButtonText}>Share</Text>
             </View>
           </TouchableOpacity>
         </View>
@@ -134,6 +135,11 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
   cardContainer: {
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.3,
+    shadowRadius: 2,  
+    elevation: 5,
     backgroundColor: '#ffffff',
     height: 400,
     width: '100%',
@@ -211,8 +217,18 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
   footerButtonText:{
-    fontSize : 16,
+    opacity: 0.7,
+    fontSize : 17,
     fontWeight: 'bold',
+  },
+  styleIcon:{
+    opacity: 0.7,
+    paddingRight: 5,
+  },
+  separatorLine:{
+    width:'100%',
+    height: 1,
+    backgroundColor: '#708090'
   }
 });
 export default NewsFeedScreen;
