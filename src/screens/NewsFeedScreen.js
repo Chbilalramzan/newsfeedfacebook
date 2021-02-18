@@ -1,7 +1,7 @@
 import React from 'react';
 import {useState} from 'react';
 import {useEffect} from 'react';
-
+import {IconButton, Colors} from 'react-native-paper';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {
@@ -25,18 +25,36 @@ const NewsFeedScreen = () => {
 
   const fetchData = () => {
     fetch(apiURL)
-      .then((response) => response.json()).then((json) => {
-        alert(JSON.stringify(json))
+      .then((response) => response.json())
+      .then((json) => {
+        alert(JSON.stringify(json));
         //   console.log(json)
-      }).catch((error) => alert(error)).finally(setLoading(false));
+      })
+      .catch((error) => alert(error))
+      .finally(setLoading(false));
   };
 
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor="#1e90ff" barStyle="light-content" />
-      <TouchableOpacity style={styles.buttonContainer} onPress={fetchData}>
-      <Text style={styles.buttonText}>Log In</Text>
-      </TouchableOpacity>
+      {/* <TouchableOpacity style={styles.buttonContainer} onPress={fetchData}> */}
+      {/* <Text style={styles.buttonText}>Log In</Text> */}
+      {/* </TouchableOpacity> */}
+      <View style={styles.cardContainer}>
+        <View style={styles.cardHeader}>
+          {/* <Image></Image> */}
+          <View>
+            <Text>Name</Text>
+            <Text>Post Time</Text>
+          </View>
+          <IconButton
+            icon="more_horiz"
+            size={20}
+            onPress={() => console.log('Pressed')}
+          />
+        </View>
+        <Text>Hello</Text>
+      </View>
       {/* {isLoading ? (
         <ActivityIndicator />
       ) : (
@@ -84,6 +102,15 @@ const styles = StyleSheet.create({
     fontSize: 18,
     textAlign: 'center',
     color: '#fff',
+  },
+  cardContainer: {
+    backgroundColor: '#ffffff',
+    height: 400,
+    width: '100%',
+  },
+  cardHeader: {
+    height: 100,
+    width: '100%',
   },
 });
 export default NewsFeedScreen;
