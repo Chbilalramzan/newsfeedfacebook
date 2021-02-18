@@ -26,7 +26,8 @@ const NewsFeedScreen = () => {
   const fetchData = () => {
     fetch(apiURL)
       .then((response) => response.json()).then((json) => {
-          console.log(json)
+        alert(JSON.stringify(json))
+        //   console.log(json)
       }).catch((error) => alert(error)).finally(setLoading(false));
   };
 
