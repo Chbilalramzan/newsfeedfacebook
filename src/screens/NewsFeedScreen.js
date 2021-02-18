@@ -1,7 +1,8 @@
 import React from 'react';
 import {useState} from 'react';
 import {useEffect} from 'react';
-import {IconButton, Colors} from 'react-native-paper';
+// import {Icon} from 'react-native-elements';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {
@@ -10,6 +11,7 @@ import {
   View,
   Text,
   TextInput,
+  Image,
   TouchableOpacity,
   FlatList,
   ActivityIndicator,
@@ -42,30 +44,58 @@ const NewsFeedScreen = () => {
       {/* </TouchableOpacity> */}
       <View style={styles.cardContainer}>
         <View style={styles.cardHeader}>
-          {/* <Image></Image> */}
-          <View>
-            <Text>Name</Text>
-            <Text>Post Time</Text>
+          <View style={styles.imageContainer}>
+            <Image
+              source={require('../../assets/user.png')}
+              style={styles.imageStyle}
+            />
           </View>
-          <IconButton
-            icon="more_horiz"
-            size={20}
-            onPress={() => console.log('Pressed')}
-          />
+          <View style={styles.textViewContainer}>
+            <View style={styles.followTextContainer}>
+              <Text style={styles.styleUserName}>Name</Text>
+              <Text style={styles.separatorDot}>.</Text>
+              <Text style={styles.followText}>Follow</Text>
+            </View>
+            <Text style={styles.styleDate}>Post Time</Text>
+          </View>
+          <TouchableOpacity>
+            <View>
+              <Icon name="ellipsis-h" size={15} color="#000000"></Icon>
+            </View>
+          </TouchableOpacity>
         </View>
-        <Text>Hello</Text>
+        <Text style={styles.postText}>Hello this is my first post</Text>
+        <View style={styles.postContainer}></View>
+        <View style={styles.cardFooter}>
+          <View style={styles.cardFooter1}>
+            <Text>likes</Text>
+          </View>
+          <View style={styles.cardFooter2}>
+            <Text>comments</Text>
+            <Text>shares</Text>
+          </View>
+        </View>
+        <View style={styles.cardFooter3Buttons}>
+          <TouchableOpacity>
+            <View style={styles.footerButtonContainer}>
+              <Icon name="thumbs-up"></Icon>
+              <Text style={styles.footerButtonText}>Like</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <View style={styles.footerButtonContainer}>
+              <Icon name="user-o"></Icon>
+              <Text style={styles.footerButtonText}>comment</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <View style={styles.footerButtonContainer}>
+              <Icon name="password"></Icon>
+              <Text style={styles.footerButtonText}>share</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
       </View>
-      {/* {isLoading ? (
-        <ActivityIndicator />
-      ) : (
-        <FlatList
-          data={data}
-          keyExtractor={({id}, index) => id}
-          renderItem={({item}) => (
-            <Text {...item.id} />
-         )}
-        />
-      )} */}
     </View>
   );
 };
@@ -109,8 +139,80 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   cardHeader: {
-    height: 100,
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    padding: 10,
+    height: 50,
     width: '100%',
   },
+  textViewContainer: {
+    flex: 7,
+  },
+  followTextContainer: {
+    flexDirection: 'row',
+  },
+  followText: {
+    color: '#00008B',
+    fontWeight: 'bold',
+    paddingLeft: 5,
+  },
+  separatorDot: {
+    fontWeight: 'bold',
+    paddingLeft: 5,
+  },
+  styleUserName: {
+    fontSize: 17,
+    fontWeight: 'bold',
+  },
+  styleDate: {
+    fontSize: 12,
+  },
+  imageContainer: {
+    flex: 1,
+    width: 40,
+    height: 40,
+    borderRadius: 40 / 2,
+  },
+  imageStyle: {
+    height: 35,
+    width: 35,
+    alignItems: 'center',
+  },
+  postText: {fontSize: 14, padding: 8},
+  postContainer: {
+    backgroundColor: '#000000',
+    width: '100%',
+    height: 250,
+  },
+  cardFooter:{
+    flexDirection: 'row',
+    width: '100%',
+    height: 30,
+    justifyContent: 'space-between'
+  },
+  cardFooter1: {
+    flex: 6,
+    padding: 8,
+  },
+  cardFooter2: {
+    padding: 8,
+    flex: 7,
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+  },
+  cardFooter3Buttons: {
+    paddingTop: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+  },
+  footerButtonContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between'
+  },
+  footerButtonText:{
+    fontSize : 16,
+    fontWeight: 'bold',
+  }
 });
 export default NewsFeedScreen;
