@@ -19,7 +19,8 @@ import {
 
 import {getNewsFeed} from '../services/NewsFeed';
 import {SafeAreaView} from 'react-native';
-import { Header } from 'react-native/Libraries/NewAppScreen';
+import Moment from 'moment';
+import moment from 'moment';
 
 const apiURL = 'https://run.mocky.io/v3/8486bb89-c415-4eed-ae7c-4ff4bbd47e50';
 
@@ -58,7 +59,7 @@ const NewsFeedScreen = () => {
               <Text style={styles.separatorDot}>.</Text>
               <Text style={styles.followText}>Follow</Text>
             </View>
-            <Text style={styles.styleDate}>{item.time}</Text>
+            <Text style={styles.styleDate}>{moment(new Date(item.time * 1000)).format('MM/DD/YYYY hh:MM')}</Text>
           </View>
           <TouchableOpacity>
             <View>
@@ -67,7 +68,9 @@ const NewsFeedScreen = () => {
           </TouchableOpacity>
         </View>
         <Text style={styles.postText}>{item.postText}</Text>
-        <View style={styles.postContainer}></View>
+        <View style={styles.postContainer}>
+          <Image source={{uri: item.postSticker == "" ? item.postFile : item.postSticker}} style={styles.post}></Image>
+        </View>
         <View style={styles.cardFooter}>
           <View style={styles.cardFooter1}>
             <Text>{item.post_likes}  likes</Text>
@@ -199,6 +202,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#000000',
     width: '100%',
     height: 250,
+  },
+  post: {
+    height: 250,
+    width: '100%'
   },
   cardFooter: {
     flexDirection: 'row',
