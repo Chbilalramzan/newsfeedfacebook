@@ -18,6 +18,7 @@ import {
 } from 'react-native';
 
 import {getNewsFeed} from '../services/NewsFeed';
+import {SafeAreaView} from 'react-native';
 
 const apiURL = 'https://run.mocky.io/v3/8486bb89-c415-4eed-ae7c-4ff4bbd47e50';
 
@@ -25,79 +26,88 @@ const NewsFeedScreen = () => {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState();
 
-  const fetchData = () => {
+  useEffect(() => {
     fetch(apiURL)
       .then((response) => response.json())
       .then((json) => {
         alert(JSON.stringify(json));
+        return JSON.stringify(setData(json));
         //   console.log(json)
       })
       .catch((error) => alert(error))
       .finally(setLoading(false));
-  };
+    }, [])
+  // const fetchData = () => {
+    
+  // };
 
   return (
-    <View style={styles.container}>
-      <StatusBar backgroundColor="#1e90ff" barStyle="light-content" />
-      {/* <TouchableOpacity style={styles.buttonContainer} onPress={fetchData}> */}
-      {/* <Text style={styles.buttonText}>Log In</Text> */}
-      {/* </TouchableOpacity> */}
-      <View style={styles.cardContainer}>
-        <View style={styles.cardHeader}>
-          <View style={styles.imageContainer}>
-            <Image
-              source={require('../../assets/user.png')}
-              style={styles.imageStyle}
-            />
+    <SafeAreaView style={styles.container}>
+      <View style={styles.container}>
+        <StatusBar backgroundColor="#1e90ff" barStyle="light-content" />
+        {/* <TouchableOpacity style={styles.buttonContainer} onPress={fetchData}> */}
+        {/* <Text style={styles.buttonText}>Log In</Text> */}
+        {/* </TouchableOpacity> */}
+        <View style={styles.cardContainer}>
+          <View style={styles.cardHeader}>
+            <View style={styles.imageContainer}>
+              <Image
+                source={require('../../assets/user.png')}
+                style={styles.imageStyle}
+              />
+            </View>
+            <View style={styles.textViewContainer}>
+              <View style={styles.followTextContainer}>
+                <Text style={styles.styleUserName}>Name</Text>
+                <Text style={styles.separatorDot}>.</Text>
+                <Text style={styles.followText}>Follow</Text>
+              </View>
+              <Text style={styles.styleDate}>Post Time</Text>
+            </View>
+            <TouchableOpacity>
+              <View>
+                <Icon name="ellipsis-h" size={20} color="#000000"></Icon>
+              </View>
+            </TouchableOpacity>
           </View>
-          <View style={styles.textViewContainer}>
-            <View style={styles.followTextContainer}>
-              <Text style={styles.styleUserName}>Name</Text>
-              <Text style={styles.separatorDot}>.</Text>
-              <Text style={styles.followText}>Follow</Text>
+          <Text style={styles.postText}>Hello this is my first post</Text>
+          <View style={styles.postContainer}></View>
+          <View style={styles.cardFooter}>
+            <View style={styles.cardFooter1}>
+              <Text>likes</Text>
             </View>
-            <Text style={styles.styleDate}>Post Time</Text>
+            <View style={styles.cardFooter2}>
+              <Text>comments</Text>
+              <Text>shares</Text>
+            </View>
           </View>
-          <TouchableOpacity>
-            <View>
-              <Icon name="ellipsis-h" size={20} color="#000000"></Icon>
-            </View>
-          </TouchableOpacity>
-        </View>
-        <Text style={styles.postText}>Hello this is my first post</Text>
-        <View style={styles.postContainer}></View>
-        <View style={styles.cardFooter}>
-          <View style={styles.cardFooter1}>
-            <Text>likes</Text>
+          <View style={styles.separatorLine}></View>
+          <View style={styles.cardFooter3Buttons}>
+            <TouchableOpacity>
+              <View style={styles.footerButtonContainer}>
+                <Icon
+                  name="thumbs-up"
+                  size={20}
+                  style={styles.styleIcon}></Icon>
+                <Text style={styles.footerButtonText}>Like</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <View style={styles.footerButtonContainer}>
+                <Icon name="comment" size={20} style={styles.styleIcon}></Icon>
+                <Text style={styles.footerButtonText}>Comment</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <View style={styles.footerButtonContainer}>
+                <Icon name="share" size={20} style={styles.styleIcon}></Icon>
+                <Text style={styles.footerButtonText}>Share</Text>
+              </View>
+            </TouchableOpacity>
           </View>
-          <View style={styles.cardFooter2}>
-            <Text>comments</Text>
-            <Text>shares</Text>
-          </View>
-        </View>
-        <View style={styles.separatorLine}></View>
-        <View style={styles.cardFooter3Buttons}>
-          <TouchableOpacity>
-            <View style={styles.footerButtonContainer}>
-              <Icon name="thumbs-up" size={20} style={styles.styleIcon}></Icon>
-              <Text style={styles.footerButtonText}>Like</Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <View style={styles.footerButtonContainer}>
-              <Icon name="comment" size={20} style={styles.styleIcon}></Icon>
-              <Text style={styles.footerButtonText}>Comment</Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <View style={styles.footerButtonContainer}>
-              <Icon name="share" size={20} style={styles.styleIcon}></Icon>
-              <Text style={styles.footerButtonText}>Share</Text>
-            </View>
-          </TouchableOpacity>
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -105,8 +115,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#44B5DF',
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   pageHeading: {
     fontSize: 30,
@@ -136,9 +144,9 @@ const styles = StyleSheet.create({
   },
   cardContainer: {
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
+    shadowOffset: {width: 0, height: 1},
     shadowOpacity: 0.3,
-    shadowRadius: 2,  
+    shadowRadius: 2,
     elevation: 5,
     backgroundColor: '#ffffff',
     height: 400,
@@ -190,11 +198,11 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 250,
   },
-  cardFooter:{
+  cardFooter: {
     flexDirection: 'row',
     width: '100%',
     height: 30,
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   cardFooter1: {
     flex: 6,
@@ -214,21 +222,21 @@ const styles = StyleSheet.create({
   footerButtonContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
-  footerButtonText:{
+  footerButtonText: {
     opacity: 0.7,
-    fontSize : 17,
+    fontSize: 17,
     fontWeight: 'bold',
   },
-  styleIcon:{
+  styleIcon: {
     opacity: 0.7,
     paddingRight: 5,
   },
-  separatorLine:{
-    width:'100%',
+  separatorLine: {
+    width: '100%',
     height: 1,
-    backgroundColor: '#708090'
-  }
+    backgroundColor: '#708090',
+  },
 });
 export default NewsFeedScreen;
