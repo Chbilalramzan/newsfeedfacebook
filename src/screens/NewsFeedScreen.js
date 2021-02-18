@@ -19,94 +19,92 @@ import {
 
 import {getNewsFeed} from '../services/NewsFeed';
 import {SafeAreaView} from 'react-native';
+import { Header } from 'react-native/Libraries/NewAppScreen';
 
 const apiURL = 'https://run.mocky.io/v3/8486bb89-c415-4eed-ae7c-4ff4bbd47e50';
 
 const NewsFeedScreen = () => {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState();
-
   useEffect(() => {
     fetch(apiURL)
       .then((response) => response.json())
       .then((json) => {
-        alert(JSON.stringify(json));
-        return JSON.stringify(setData(json));
-        //   console.log(json)
+        return setData(json)
       })
       .catch((error) => alert(error))
       .finally(setLoading(false));
     }, [])
-  // const fetchData = () => {
-    
-  // };
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.container}>
-        <StatusBar backgroundColor="#1e90ff" barStyle="light-content" />
-        {/* <TouchableOpacity style={styles.buttonContainer} onPress={fetchData}> */}
-        {/* <Text style={styles.buttonText}>Log In</Text> */}
-        {/* </TouchableOpacity> */}
-        <View style={styles.cardContainer}>
-          <View style={styles.cardHeader}>
-            <View style={styles.imageContainer}>
-              <Image
-                source={require('../../assets/user.png')}
-                style={styles.imageStyle}
-              />
-            </View>
-            <View style={styles.textViewContainer}>
-              <View style={styles.followTextContainer}>
-                <Text style={styles.styleUserName}>Name</Text>
-                <Text style={styles.separatorDot}>.</Text>
-                <Text style={styles.followText}>Follow</Text>
-              </View>
-              <Text style={styles.styleDate}>Post Time</Text>
-            </View>
-            <TouchableOpacity>
-              <View>
-                <Icon name="ellipsis-h" size={20} color="#000000"></Icon>
-              </View>
-            </TouchableOpacity>
+      <FlatList style={styles.listStyling}
+      data = {data}
+      renderItem = {({item}) => (
+        // <Text >{item.time}</Text>
+      <View>
+      <StatusBar backgroundColor="#1e90ff" barStyle="light-content" />
+      <View style={styles.cardContainer}>
+        <View style={styles.cardHeader}>
+          <View style={styles.imageContainer}>
+            <Image
+              source={require('../../assets/user.png')}
+              style={styles.imageStyle}
+            />
           </View>
-          <Text style={styles.postText}>Hello this is my first post</Text>
-          <View style={styles.postContainer}></View>
-          <View style={styles.cardFooter}>
-            <View style={styles.cardFooter1}>
-              <Text>likes</Text>
+          <View style={styles.textViewContainer}>
+            <View style={styles.followTextContainer}>
+              <Text style={styles.styleUserName}>{item.publisher.username}</Text>
+              <Text style={styles.separatorDot}>.</Text>
+              <Text style={styles.followText}>Follow</Text>
             </View>
-            <View style={styles.cardFooter2}>
-              <Text>comments</Text>
-              <Text>shares</Text>
-            </View>
+            <Text style={styles.styleDate}>{item.time}</Text>
           </View>
-          <View style={styles.separatorLine}></View>
-          <View style={styles.cardFooter3Buttons}>
-            <TouchableOpacity>
-              <View style={styles.footerButtonContainer}>
-                <Icon
-                  name="thumbs-up"
-                  size={20}
-                  style={styles.styleIcon}></Icon>
-                <Text style={styles.footerButtonText}>Like</Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <View style={styles.footerButtonContainer}>
-                <Icon name="comment" size={20} style={styles.styleIcon}></Icon>
-                <Text style={styles.footerButtonText}>Comment</Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <View style={styles.footerButtonContainer}>
-                <Icon name="share" size={20} style={styles.styleIcon}></Icon>
-                <Text style={styles.footerButtonText}>Share</Text>
-              </View>
-            </TouchableOpacity>
+          <TouchableOpacity>
+            <View>
+              <Icon name="ellipsis-h" size={20} color="#000000"></Icon>
+            </View>
+          </TouchableOpacity>
+        </View>
+        <Text style={styles.postText}>{item.postText}</Text>
+        <View style={styles.postContainer}></View>
+        <View style={styles.cardFooter}>
+          <View style={styles.cardFooter1}>
+            <Text>{item.post_likes}  likes</Text>
+          </View>
+          <View style={styles.cardFooter2}>
+            <Text>{item.post_comments}  comments</Text>
+            <Text>{item.post_shares}  shares</Text>
           </View>
         </View>
+        <View style={styles.separatorLine}></View>
+        <View style={styles.cardFooter3Buttons}>
+          <TouchableOpacity>
+            <View style={styles.footerButtonContainer}>
+              <Icon
+                name="thumbs-up"
+                size={20}
+                style={styles.styleIcon}></Icon>
+              <Text style={styles.footerButtonText}>Like</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <View style={styles.footerButtonContainer}>
+              <Icon name="comment" size={20} style={styles.styleIcon}></Icon>
+              <Text style={styles.footerButtonText}>Comment</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <View style={styles.footerButtonContainer}>
+              <Icon name="share" size={20} style={styles.styleIcon}></Icon>
+              <Text style={styles.footerButtonText}>Share</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
       </View>
+    </View>
+      )}
+      />
     </SafeAreaView>
   );
 };
@@ -115,6 +113,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#44B5DF',
+  },
+  listStyling: {
+
   },
   pageHeading: {
     fontSize: 30,
@@ -143,6 +144,7 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
   cardContainer: {
+    marginBottom: 10,
     shadowColor: '#000',
     shadowOffset: {width: 0, height: 1},
     shadowOpacity: 0.3,
@@ -234,7 +236,8 @@ const styles = StyleSheet.create({
     paddingRight: 5,
   },
   separatorLine: {
-    width: '100%',
+    width: '95%',
+    alignSelf: 'center',
     height: 1,
     backgroundColor: '#708090',
   },
