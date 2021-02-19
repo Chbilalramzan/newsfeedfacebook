@@ -9,6 +9,7 @@ import {
   StatusBar,
   StyleSheet,
   View,
+  Header,
   Text,
   TextInput,
   Image,
@@ -49,7 +50,6 @@ const NewsFeedScreen = ({navigation}) => {
         style={styles.listStyling}
         data={data}
         renderItem={({item}) => (
-          // <Text >{item.time}</Text>
           <View>
             <StatusBar backgroundColor="#1e90ff" barStyle="light-content" />
             <View style={styles.cardContainer}>

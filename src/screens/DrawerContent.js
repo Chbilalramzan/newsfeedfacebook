@@ -22,7 +22,7 @@ import{ AuthContext } from '../../components/context';
 
 export function DrawerContent(props) {
 
-    const { signOut, toggleTheme } = React.useContext(AuthContext);
+    const { signOut } = React.useContext(AuthContext);
 
     return(
         <View style={{flex:1}}>
@@ -31,9 +31,9 @@ export function DrawerContent(props) {
                     <View style={styles.userInfoSection}>
                         <View style={{flexDirection:'row',marginTop: 15}}>
                             <Avatar.Image 
-                                source={{
-                                }}
-                                size={50}
+                                source={require('../../assets/user.png')
+                                }
+                                size={60}
                             />
                             <View style={{marginLeft:15, flexDirection:'column'}}>
                                 <Title style={styles.title}>John Doe</Title>
@@ -79,7 +79,7 @@ export function DrawerContent(props) {
                         <DrawerItem 
                             icon={({color, size}) => (
                                 <Icon 
-                                name="notification-outline" 
+                                name="bell-outline" 
                                 color={color}
                                 size={size}
                                 />
@@ -90,7 +90,7 @@ export function DrawerContent(props) {
                         <DrawerItem 
                             icon={({color, size}) => (
                                 <Icon 
-                                name="settings-outline" 
+                                name="cog-outline" 
                                 color={color}
                                 size={size}
                                 />
@@ -106,7 +106,7 @@ export function DrawerContent(props) {
                                 size={size}
                                 />
                             )}
-                            label="Support"
+                            label="NewsFeed"
                             onPress={() => {props.navigation.navigate('NewsFeedScreen')}}
                         />
                     </Drawer.Section>

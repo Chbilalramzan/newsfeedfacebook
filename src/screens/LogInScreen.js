@@ -1,7 +1,6 @@
 import 'react-native-gesture-handler';
 import React from 'react';
-import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
+import * as Animatable from 'react-native-animatable';
 import {
   StatusBar,
   StyleSheet,
@@ -13,8 +12,7 @@ import {
 } from 'react-native';
 
 import Users from '../../models/user';
-import { AuthContext } from '../../components/context';
-
+import {AuthContext} from '../../components/context';
 
 const LogInScreen = ({navigation}) => {
   const [data, setData] = React.useState({
@@ -47,34 +45,34 @@ const LogInScreen = ({navigation}) => {
   };
 
   const handlePasswordChange = (val) => {
-    if( val.trim().length >= 8 ) {
-        setData({
-            ...data,
-            password: val,
-            isValidPassword: true
-        });
+    if (val.trim().length >= 8) {
+      setData({
+        ...data,
+        password: val,
+        isValidPassword: true,
+      });
     } else {
-        setData({
-            ...data,
-            password: val,
-            isValidPassword: false
-        });
+      setData({
+        ...data,
+        password: val,
+        isValidPassword: false,
+      });
     }
-}
+  };
 
   const handleValidUser = (val) => {
-    if( val.trim().length >= 4 ) {
-        setData({
-            ...data,
-            isValidUser: true
-        });
+    if (val.trim().length >= 4) {
+      setData({
+        ...data,
+        isValidUser: true,
+      });
     } else {
-        setData({
-            ...data,
-            isValidUser: false
-        });
+      setData({
+        ...data,
+        isValidUser: false,
+      });
     }
-}
+  };
   const loginHandle = (userName, password) => {
     const foundUser = Users.filter((item) => {
       return userName == item.username && password == item.password;
@@ -87,8 +85,7 @@ const LogInScreen = ({navigation}) => {
       );
       return;
     }
-
-    else if (foundUser.length == 0) {
+    if (foundUser.length == 0) {
       Alert.alert('Invalid User!', 'Username or password is incorrect.', [
         {text: 'Okay'},
       ]);
@@ -108,6 +105,13 @@ const LogInScreen = ({navigation}) => {
         onChangeText={(val) => textInputChange(val)}
         onEndEditing={(e) => handleValidUser(e.nativeEvent.text)}
       />
+      {data.isValidUser ? null : (
+        <Animatable.View animation="fadeInLeft" duration={500}>
+          <Text style={styles.errorMsg}>
+            Username must be 4 characters long.
+          </Text>
+        </Animatable.View>
+      )}
       <TextInput
         style={styles.inputField}
         placeholder="Password"
@@ -115,7 +119,9 @@ const LogInScreen = ({navigation}) => {
         autoCapitalize={'none'}
         onChangeText={(val) => handlePasswordChange(val)}
       />
-      <TouchableOpacity style={styles.buttonContainer} onPress={loginHandle(data.username, data.password)}>
+      <TouchableOpacity
+        style={styles.buttonContainer}
+        onPress={() => loginHandle(data.username, data.password)}>
         <Text style={styles.buttonText}>Log In</Text>
       </TouchableOpacity>
     </View>
