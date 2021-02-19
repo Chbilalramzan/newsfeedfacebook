@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
     elevation: 5,
     backgroundColor: '#ffffff',
-    height: 400,
+    height: 420,
     width: '100%',
   },
   cardHeader: {
@@ -241,12 +241,13 @@ const styles = StyleSheet.create({
   cardFooter: {
     flexDirection: 'row',
     width: '100%',
-    height: 30,
+    height: 45,
+    alignItems: 'center',
     justifyContent: 'space-between',
   },
   cardFooter1: {
     flex: 6,
-    padding: 8,
+    padding: 10,
   },
   cardFooter2: {
     padding: 8,
