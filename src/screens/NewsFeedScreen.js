@@ -1,10 +1,7 @@
 import React from 'react';
 import {useState} from 'react';
 import {useEffect} from 'react';
-// import {Icon} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
 import {
   StatusBar,
   StyleSheet,
@@ -32,6 +29,7 @@ const NewsFeedScreen = ({navigation}) => {
     fetch(apiURL)
       .then((response) => response.json())
       .then((json) => {
+        setLoading(false);
         return setData(json);
       })
       .catch((error) => alert(error));
@@ -46,93 +44,99 @@ const NewsFeedScreen = ({navigation}) => {
           translucent={false}
         />
       </SafeAreaView>
-      <FlatList
-        style={styles.listStyling}
-        data={data}
-        renderItem={({item}) => (
-          <View>
-            <StatusBar backgroundColor="#1e90ff" barStyle="light-content" />
-            <View style={styles.cardContainer}>
-              <View style={styles.cardHeader}>
-                <View style={styles.imageContainer}>
-                  <Image
-                    source={require('../../assets/user.png')}
-                    style={styles.imageStyle}
-                  />
-                </View>
-                <View style={styles.textViewContainer}>
-                  <View style={styles.followTextContainer}>
-                    <Text style={styles.styleUserName}>
-                      {item.publisher.username}
+      {isLoading ? (
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <ActivityIndicator size="large"></ActivityIndicator>
+      </View>
+      ) : (
+        <FlatList
+          style={styles.listStyling}
+          data={data}
+          renderItem={({item}) => (
+            <View>
+              <StatusBar backgroundColor="#1e90ff" barStyle="light-content" />
+              <View style={styles.cardContainer}>
+                <View style={styles.cardHeader}>
+                  <View style={styles.imageContainer}>
+                    <Image
+                      source={require('../../assets/user.png')}
+                      style={styles.imageStyle}
+                    />
+                  </View>
+                  <View style={styles.textViewContainer}>
+                    <View style={styles.followTextContainer}>
+                      <Text style={styles.styleUserName}>
+                        {item.publisher.username}
+                      </Text>
+                      <Text style={styles.separatorDot}>.</Text>
+                      <Text style={styles.followText}>Follow</Text>
+                    </View>
+                    <Text style={styles.styleDate}>
+                      {moment(new Date(item.time * 1000)).format(
+                        'MM/DD/YYYY hh:MM',
+                      )}
                     </Text>
-                    <Text style={styles.separatorDot}>.</Text>
-                    <Text style={styles.followText}>Follow</Text>
                   </View>
-                  <Text style={styles.styleDate}>
-                    {moment(new Date(item.time * 1000)).format(
-                      'MM/DD/YYYY hh:MM',
-                    )}
-                  </Text>
+                  <TouchableOpacity>
+                    <View>
+                      <Icon name="ellipsis-h" size={20} color="#000000"></Icon>
+                    </View>
+                  </TouchableOpacity>
                 </View>
-                <TouchableOpacity>
-                  <View>
-                    <Icon name="ellipsis-h" size={20} color="#000000"></Icon>
-                  </View>
-                </TouchableOpacity>
-              </View>
-              <Text style={styles.postText}>{item.postText}</Text>
-              <View style={styles.postContainer}>
-                <Image
-                  source={
-                    item.postSticker == ''
-                      ? require('../../assets/no-pictures.png')
-                      : {uri: item.postSticker}
-                  }
-                  style={styles.post}></Image>
-              </View>
-              <View style={styles.cardFooter}>
-                <View style={styles.cardFooter1}>
-                  <Text>{item.post_likes} likes</Text>
+                <Text style={styles.postText}>{item.postText}</Text>
+                <View style={styles.postContainer}>
+                  <Image
+                    source={
+                      item.postSticker == ''
+                        ? require('../../assets/no-pictures.png')
+                        : {uri: item.postSticker}
+                    }
+                    style={styles.post}></Image>
                 </View>
-                <View style={styles.cardFooter2}>
-                  <Text>{item.post_comments} comments</Text>
-                  <Text>{item.post_shares} shares</Text>
+                <View style={styles.cardFooter}>
+                  <View style={styles.cardFooter1}>
+                    <Text>{item.post_likes} likes</Text>
+                  </View>
+                  <View style={styles.cardFooter2}>
+                    <Text>{item.post_comments} comments</Text>
+                    <Text>{item.post_shares} shares</Text>
+                  </View>
                 </View>
-              </View>
-              <View style={styles.separatorLine}></View>
-              <View style={styles.cardFooter3Buttons}>
-                <TouchableOpacity>
-                  <View style={styles.footerButtonContainer}>
-                    <Icon
-                      name="thumbs-up"
-                      size={20}
-                      style={styles.styleIcon}></Icon>
-                    <Text style={styles.footerButtonText}>Like</Text>
-                  </View>
-                </TouchableOpacity>
-                <TouchableOpacity>
-                  <View style={styles.footerButtonContainer}>
-                    <Icon
-                      name="comment"
-                      size={20}
-                      style={styles.styleIcon}></Icon>
-                    <Text style={styles.footerButtonText}>Comment</Text>
-                  </View>
-                </TouchableOpacity>
-                <TouchableOpacity>
-                  <View style={styles.footerButtonContainer}>
-                    <Icon
-                      name="share"
-                      size={20}
-                      style={styles.styleIcon}></Icon>
-                    <Text style={styles.footerButtonText}>Share</Text>
-                  </View>
-                </TouchableOpacity>
+                <View style={styles.separatorLine}></View>
+                <View style={styles.cardFooter3Buttons}>
+                  <TouchableOpacity>
+                    <View style={styles.footerButtonContainer}>
+                      <Icon
+                        name="thumbs-up"
+                        size={20}
+                        style={styles.styleIcon}></Icon>
+                      <Text style={styles.footerButtonText}>Like</Text>
+                    </View>
+                  </TouchableOpacity>
+                  <TouchableOpacity>
+                    <View style={styles.footerButtonContainer}>
+                      <Icon
+                        name="comment"
+                        size={20}
+                        style={styles.styleIcon}></Icon>
+                      <Text style={styles.footerButtonText}>Comment</Text>
+                    </View>
+                  </TouchableOpacity>
+                  <TouchableOpacity>
+                    <View style={styles.footerButtonContainer}>
+                      <Icon
+                        name="share"
+                        size={20}
+                        style={styles.styleIcon}></Icon>
+                      <Text style={styles.footerButtonText}>Share</Text>
+                    </View>
+                  </TouchableOpacity>
+                </View>
               </View>
             </View>
-          </View>
-        )}
-      />
+          )}
+        />
+      )}
     </View>
   );
 };

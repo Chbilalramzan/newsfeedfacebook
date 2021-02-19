@@ -1,27 +1,29 @@
 import React from 'react';
-import { View, Text, Button, StyleSheet, StatusBar } from 'react-native';
-import { useTheme } from '@react-navigation/native';
+import {View, Text, Button, StyleSheet, StatusBar} from 'react-native';
+import {useTheme} from '@react-navigation/native';
+import {Header} from 'react-native/Libraries/NewAppScreen';
 
 const HomeScreen = ({navigation}) => {
-
-  const { colors } = useTheme();
+  const {colors} = useTheme();
 
   const theme = useTheme();
-  
-    return (
-      <View style={styles.container}>
-        <StatusBar barStyle= { theme.dark ? "light-content" : "dark-content" }/>
-        <Text style={{color: colors.text}}>Home Screen</Text>
-      </View>
-    );
+
+  return (
+    <View style={styles.container}>
+      <StatusBar barStyle={theme.dark ? 'light-content' : 'dark-content'} />
+      
+      <Header>Home</Header>
+      <Text style={{color: colors.text}}>Home Screen</Text>
+    </View>
+  );
 };
 
 export default HomeScreen;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1, 
-    alignItems: 'center', 
-    justifyContent: 'center'
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

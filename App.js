@@ -1,20 +1,22 @@
 import 'react-native-gesture-handler';
 import React, {useEffect, useReducer} from 'react';
 
+import Icon from 'react-native-vector-icons/Ionicons';
+
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import {NavigationContainer} from '@react-navigation/native';
 
-import {DrawerContent} from './src/screens/DrawerContent'
+import {DrawerContent} from './src/screens/DrawerContent';
 
 import NewsFeedScreen from './src/screens/NewsFeedScreen';
 import HomeScreen from './src/screens/HomeScree';
 import NotificationScreen from './src/screens/NotificationScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
-import SettingsScreen from './src/screens/SettingScreen'
+import SettingsScreen from './src/screens/SettingScreen';
 
 import RootStackScreen from './src/screens/RootStackScreen';
 
-import {AsyncStorage} from '@react-native-community/async-storage'
+import {AsyncStorage} from '@react-native-community/async-storage';
 import {View} from 'react-native';
 import {ActivityIndicator} from 'react-native-paper';
 
@@ -101,17 +103,39 @@ const App = () => {
       </View>
     );
   }
-
+  
   return (
     <AuthContext.Provider value={authContext}>
       <NavigationContainer>
         {loginState.userToken !== null ? (
-          <Drawer.Navigator drawerContent={props => <DrawerContent {...props} />}>
-            <Drawer.Screen name="NewsFeedScreen" component={NewsFeedScreen} />
-            <Drawer.Screen name="HomeScreen" component={HomeScreen} />
+          <Drawer.Navigator
+            drawerContent={(props) => <DrawerContent {...props} />}>
+            <Drawer.Screen
+              name="NewsFeedScreen"
+              component={NewsFeedScreen}
+              options={{
+                title:'News Feed',
+                headerLeft: () => (
+                    <Icon.Button name="ios-menu" size={25} backgroundColor="#009387" onPress={() => navigation.openDrawer()}></Icon.Button>
+                )
+                }}
+            />
+            <Drawer.Screen
+              name="HomeScreen"
+              component={HomeScreen}
+              options={{
+                title:'Home',
+                headerLeft: () => (
+                    <Icon.Button name="ios-menu" size={25} backgroundColor="#009387" onPress={() => navigation.openDrawer()}></Icon.Button>
+                )
+                }}
+            />
             <Drawer.Screen name="SettingScreen" component={SettingsScreen} />
-            <Drawer.Screen name="NotificationScreen" component={NotificationScreen} />
-            <Drawer.Screen name="ProfileScreen" component={ProfileScreen}/>
+            <Drawer.Screen
+              name="NotificationScreen"
+              component={NotificationScreen}
+            />
+            <Drawer.Screen name="ProfileScreen" component={ProfileScreen} />
           </Drawer.Navigator>
         ) : (
           <RootStackScreen />
