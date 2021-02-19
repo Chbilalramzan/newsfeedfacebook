@@ -24,102 +24,129 @@ import moment from 'moment';
 
 const apiURL = 'https://run.mocky.io/v3/8486bb89-c415-4eed-ae7c-4ff4bbd47e50';
 
-const NewsFeedScreen = () => {
+const NewsFeedScreen = ({navigation}) => {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState();
   useEffect(() => {
     fetch(apiURL)
       .then((response) => response.json())
       .then((json) => {
-        return setData(json)
+        return setData(json);
       })
-      .catch((error) => alert(error))
-      .finally(setLoading(false));
-    }, [])
+      .catch((error) => alert(error));
+  }, []);
 
   return (
-    <SafeAreaView style={styles.container}>
-      <FlatList style={styles.listStyling}
-      data = {data}
-      renderItem = {({item}) => (
-        // <Text >{item.time}</Text>
-      <View>
-      <StatusBar backgroundColor="#1e90ff" barStyle="light-content" />
-      <View style={styles.cardContainer}>
-        <View style={styles.cardHeader}>
-          <View style={styles.imageContainer}>
-            <Image
-              source={require('../../assets/user.png')}
-              style={styles.imageStyle}
-            />
+    <View style={styles.container}>
+      <SafeAreaView style={styles.safeAreaViewstyle}>
+        <StatusBar
+          barStyle={'dark-content'}
+          backgroundColor={'white'}
+          translucent={false}
+        />
+      </SafeAreaView>
+      <FlatList
+        style={styles.listStyling}
+        data={data}
+        renderItem={({item}) => (
+          // <Text >{item.time}</Text>
+          <View>
+            <StatusBar backgroundColor="#1e90ff" barStyle="light-content" />
+            <View style={styles.cardContainer}>
+              <View style={styles.cardHeader}>
+                <View style={styles.imageContainer}>
+                  <Image
+                    source={require('../../assets/user.png')}
+                    style={styles.imageStyle}
+                  />
+                </View>
+                <View style={styles.textViewContainer}>
+                  <View style={styles.followTextContainer}>
+                    <Text style={styles.styleUserName}>
+                      {item.publisher.username}
+                    </Text>
+                    <Text style={styles.separatorDot}>.</Text>
+                    <Text style={styles.followText}>Follow</Text>
+                  </View>
+                  <Text style={styles.styleDate}>
+                    {moment(new Date(item.time * 1000)).format(
+                      'MM/DD/YYYY hh:MM',
+                    )}
+                  </Text>
+                </View>
+                <TouchableOpacity>
+                  <View>
+                    <Icon name="ellipsis-h" size={20} color="#000000"></Icon>
+                  </View>
+                </TouchableOpacity>
+              </View>
+              <Text style={styles.postText}>{item.postText}</Text>
+              <View style={styles.postContainer}>
+                <Image
+                  source={
+                    item.postSticker == ''
+                      ? require('../../assets/no-pictures.png')
+                      : {uri: item.postSticker}
+                  }
+                  style={styles.post}></Image>
+              </View>
+              <View style={styles.cardFooter}>
+                <View style={styles.cardFooter1}>
+                  <Text>{item.post_likes} likes</Text>
+                </View>
+                <View style={styles.cardFooter2}>
+                  <Text>{item.post_comments} comments</Text>
+                  <Text>{item.post_shares} shares</Text>
+                </View>
+              </View>
+              <View style={styles.separatorLine}></View>
+              <View style={styles.cardFooter3Buttons}>
+                <TouchableOpacity>
+                  <View style={styles.footerButtonContainer}>
+                    <Icon
+                      name="thumbs-up"
+                      size={20}
+                      style={styles.styleIcon}></Icon>
+                    <Text style={styles.footerButtonText}>Like</Text>
+                  </View>
+                </TouchableOpacity>
+                <TouchableOpacity>
+                  <View style={styles.footerButtonContainer}>
+                    <Icon
+                      name="comment"
+                      size={20}
+                      style={styles.styleIcon}></Icon>
+                    <Text style={styles.footerButtonText}>Comment</Text>
+                  </View>
+                </TouchableOpacity>
+                <TouchableOpacity>
+                  <View style={styles.footerButtonContainer}>
+                    <Icon
+                      name="share"
+                      size={20}
+                      style={styles.styleIcon}></Icon>
+                    <Text style={styles.footerButtonText}>Share</Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
+            </View>
           </View>
-          <View style={styles.textViewContainer}>
-            <View style={styles.followTextContainer}>
-              <Text style={styles.styleUserName}>{item.publisher.username}</Text>
-              <Text style={styles.separatorDot}>.</Text>
-              <Text style={styles.followText}>Follow</Text>
-            </View>
-            <Text style={styles.styleDate}>{moment(new Date(item.time * 1000)).format('MM/DD/YYYY hh:MM')}</Text>
-          </View>
-          <TouchableOpacity>
-            <View>
-              <Icon name="ellipsis-h" size={20} color="#000000"></Icon>
-            </View>
-          </TouchableOpacity>
-        </View>
-        <Text style={styles.postText}>{item.postText}</Text>
-        <View style={styles.postContainer}>
-          <Image source={{uri: item.postSticker == "" ? item.postFile : item.postSticker}} style={styles.post}></Image>
-        </View>
-        <View style={styles.cardFooter}>
-          <View style={styles.cardFooter1}>
-            <Text>{item.post_likes}  likes</Text>
-          </View>
-          <View style={styles.cardFooter2}>
-            <Text>{item.post_comments}  comments</Text>
-            <Text>{item.post_shares}  shares</Text>
-          </View>
-        </View>
-        <View style={styles.separatorLine}></View>
-        <View style={styles.cardFooter3Buttons}>
-          <TouchableOpacity>
-            <View style={styles.footerButtonContainer}>
-              <Icon
-                name="thumbs-up"
-                size={20}
-                style={styles.styleIcon}></Icon>
-              <Text style={styles.footerButtonText}>Like</Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <View style={styles.footerButtonContainer}>
-              <Icon name="comment" size={20} style={styles.styleIcon}></Icon>
-              <Text style={styles.footerButtonText}>Comment</Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <View style={styles.footerButtonContainer}>
-              <Icon name="share" size={20} style={styles.styleIcon}></Icon>
-              <Text style={styles.footerButtonText}>Share</Text>
-            </View>
-          </TouchableOpacity>
-        </View>
-      </View>
-    </View>
-      )}
+        )}
       />
-    </SafeAreaView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  safeAreaViewstyle: {
     flex: 1,
     backgroundColor: '#44B5DF',
   },
-  listStyling: {
-
+  container: {
+    flex: 1,
+    backgroundColor: '#ffffff',
   },
+  listStyling: {},
   pageHeading: {
     fontSize: 30,
     textAlign: 'center',
@@ -199,13 +226,13 @@ const styles = StyleSheet.create({
   },
   postText: {fontSize: 14, padding: 8},
   postContainer: {
-    backgroundColor: '#000000',
+    // backgroundColor: '#000000',
     width: '100%',
     height: 250,
   },
   post: {
     height: 250,
-    width: '100%'
+    width: '100%',
   },
   cardFooter: {
     flexDirection: 'row',

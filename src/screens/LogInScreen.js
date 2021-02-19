@@ -9,20 +9,113 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 
-const LogInScreen = () => {
+import Users from '../../models/user';
+import { AuthContext } from '../../components/context';
+
+
+const LogInScreen = ({navigation}) => {
+  const [data, setData] = React.useState({
+    username: '',
+    password: '',
+    check_textInputChange: false,
+    secureTextEntry: true,
+    isValidUser: true,
+    isValidPassword: true,
+  });
+
+  const {signIn} = React.useContext(AuthContext);
+
+  const textInputChange = (val) => {
+    if (val.trim().length >= 4) {
+      setData({
+        ...data,
+        username: val,
+        check_textInputChange: true,
+        isValidUser: true,
+      });
+    } else {
+      setData({
+        ...data,
+        username: val,
+        check_textInputChange: false,
+        isValidUser: false,
+      });
+    }
+  };
+
+  const handlePasswordChange = (val) => {
+    if( val.trim().length >= 8 ) {
+        setData({
+            ...data,
+            password: val,
+            isValidPassword: true
+        });
+    } else {
+        setData({
+            ...data,
+            password: val,
+            isValidPassword: false
+        });
+    }
+}
+
+  const handleValidUser = (val) => {
+    if( val.trim().length >= 4 ) {
+        setData({
+            ...data,
+            isValidUser: true
+        });
+    } else {
+        setData({
+            ...data,
+            isValidUser: false
+        });
+    }
+}
+  const loginHandle = (userName, password) => {
+    const foundUser = Users.filter((item) => {
+      return userName == item.username && password == item.password;
+    });
+    if (data.username.length == 0 || data.password.length == 0) {
+      Alert.alert(
+        'Wrong Input!',
+        'Username or password field cannot be empty.',
+        [{text: 'Okay'}],
+      );
+      return;
+    }
+
+    else if (foundUser.length == 0) {
+      Alert.alert('Invalid User!', 'Username or password is incorrect.', [
+        {text: 'Okay'},
+      ]);
+      return;
+    }
+    signIn(foundUser);
+  };
+
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor="#1e90ff" barStyle="light-content" />
       <Text style={styles.pageHeading}>Login To Trevely</Text>
-      <TextInput style={styles.inputField} placeholder="Username" />
+      <TextInput
+        style={styles.inputField}
+        placeholder="Username"
+        autoCapitalize={'none'}
+        onChangeText={(val) => textInputChange(val)}
+        onEndEditing={(e) => handleValidUser(e.nativeEvent.text)}
+      />
       <TextInput
         style={styles.inputField}
         placeholder="Password"
         secureTextEntry
+        autoCapitalize={'none'}
+        onChangeText={(val) => handlePasswordChange(val)}
       />
-      <TouchableOpacity style={styles.buttonContainer}>
+      <TouchableOpacity style={styles.buttonContainer} onPress={loginHandle(data.username, data.password)}>
         <Text style={styles.buttonText}>Log In</Text>
       </TouchableOpacity>
     </View>
@@ -63,4 +156,4 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
 });
- export default LogInScreen;
+export default LogInScreen;
